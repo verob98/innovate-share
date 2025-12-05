@@ -100,7 +100,7 @@ const Store = () => {
               <span className="text-sm font-medium">Tienda Digital</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Recursos & Productos
+              Recursos & Productosss
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Descubre cursos, templates, e-books y recursos exclusivos para potenciar 

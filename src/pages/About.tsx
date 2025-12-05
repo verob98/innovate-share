@@ -60,7 +60,7 @@ const About = () => {
                   Innovadora Digital
                 </h1>
                 <p className="text-primary font-medium mb-4">
-                  Creadora & Desarrolladora
+                  informatica | electronica | tecnologia
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
                   Soy una creadora y desarrolladora apasionada por la informática, 
