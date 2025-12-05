@@ -1,6 +1,27 @@
 import { Cpu, Code, Wifi, Zap, Sparkles, CircuitBoard } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const AboutSection = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const techIcons = [
     { icon: Cpu, delay: "0s" },
     { icon: Code, delay: "1s" },
@@ -10,12 +31,22 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="sobre-mi" className="pt-24 pb-16 px-4">
+    <section 
+      id="sobre-mi" 
+      ref={sectionRef}
+      className="pt-28 md:pt-32 pb-16 px-4 min-h-screen flex items-center"
+    >
       <div className="container mx-auto max-w-4xl">
-        <div className="glass-card p-8 md:p-12">
+        <div className={`glass-card p-8 md:p-12 transition-all duration-1000 ease-out ${
+          isVisible 
+            ? "opacity-100 translate-y-0 scale-100" 
+            : "opacity-0 translate-y-16 scale-95"
+        }`}>
           <div className="flex flex-col md:flex-row items-center gap-8">
             {/* Avatar */}
-            <div className="relative">
+            <div className={`relative transition-all duration-1000 delay-300 ${
+              isVisible ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-75 -rotate-12"
+            }`}>
               <div className="w-40 h-40 rounded-full bg-gradient-to-br from-primary to-primary/60 p-1 animate-float">
                 <div className="w-full h-full rounded-full bg-secondary flex items-center justify-center overflow-hidden">
                   <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
@@ -33,7 +64,9 @@ const AboutSection = () => {
             </div>
 
             {/* Content */}
-            <div className="flex-1 text-center md:text-left">
+            <div className={`flex-1 text-center md:text-left transition-all duration-1000 delay-500 ${
+              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
+            }`}>
               <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
                 Innovadora Digital
               </h1>
@@ -51,12 +84,19 @@ const AboutSection = () => {
           </div>
 
           {/* Tech Icons Row */}
-          <div className="flex justify-center gap-4 mt-8 pt-8 border-t border-border/50">
+          <div className={`flex justify-center gap-4 mt-8 pt-8 border-t border-border/50 transition-all duration-1000 delay-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}>
             {techIcons.map((item, index) => (
               <div
                 key={index}
-                className="w-12 h-12 rounded-xl bg-secondary/50 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 cursor-pointer"
-                style={{ animationDelay: item.delay }}
+                className={`w-12 h-12 rounded-xl bg-secondary/50 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 cursor-pointer ${
+                  isVisible ? "opacity-100 scale-100" : "opacity-0 scale-0"
+                }`}
+                style={{ 
+                  animationDelay: item.delay,
+                  transitionDelay: `${800 + index * 100}ms`
+                }}
               >
                 <item.icon className="w-6 h-6" />
               </div>

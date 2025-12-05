@@ -1,7 +1,27 @@
 import { Lightbulb, Zap, Settings, Sparkles, Code, Shield } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import TipCard from "./TipCard";
 
 const TipsSection = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
   const tips = [
     {
       id: "tip-1",
@@ -42,9 +62,18 @@ const TipsSection = () => {
   ];
 
   return (
-    <section id="tips" className="py-16 px-4">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-12">
+    <section 
+      id="tips" 
+      ref={sectionRef}
+      className="py-20 px-4 relative overflow-hidden"
+    >
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
+      
+      <div className="container mx-auto max-w-6xl relative">
+        <div className={`text-center mb-12 transition-all duration-1000 ${
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-12"
+        }`}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Tips & Consejos
           </h2>
@@ -58,8 +87,12 @@ const TipsSection = () => {
           {tips.map((tip, index) => (
             <div
               key={tip.id}
-              className="opacity-0 animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className={`transition-all duration-700 ease-out ${
+                isVisible 
+                  ? "opacity-100 translate-y-0 scale-100" 
+                  : "opacity-0 translate-y-12 scale-95"
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
             >
               <TipCard {...tip} />
             </div>
