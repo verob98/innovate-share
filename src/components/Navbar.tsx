@@ -1,9 +1,11 @@
-import { Menu, X, Cpu, Lightbulb, Share2, User } from "lucide-react";
+import { Menu, X, Cpu, Lightbulb, Share2, User, Briefcase, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,10 +16,14 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { href: "#sobre-mi", label: "Sobre Mí", icon: User },
-    { href: "#tips", label: "Tips & Consejos", icon: Lightbulb },
-    { href: "#redes", label: "Redes Sociales", icon: Share2 },
+    { href: "/about", label: "Sobre Mí", icon: User },
+    { href: "/tips", label: "Tips", icon: Lightbulb },
+    { href: "/services", label: "Servicios", icon: Briefcase },
+    { href: "/store", label: "Tienda", icon: ShoppingBag },
+    { href: "/social", label: "Redes", icon: Share2 },
   ];
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav 
@@ -31,8 +37,8 @@ const Navbar = () => {
         <div className={`flex items-center justify-between transition-all duration-500 ${
           isScrolled ? "h-16" : "h-20 md:h-24"
         }`}>
-          <a 
-            href="#" 
+          <Link 
+            to="/" 
             className={`flex items-center gap-3 font-bold transition-all duration-500 ${
               isScrolled 
                 ? "text-primary text-lg" 
@@ -47,24 +53,28 @@ const Navbar = () => {
               <Cpu className="w-full h-full" />
             </div>
             <span className="tracking-tight">Innovadora Digital</span>
-          </a>
+          </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-1">
             {navItems.map((item, index) => (
-              <a
+              <Link
                 key={item.href}
-                href={item.href}
+                to={item.href}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ${
                   isScrolled 
-                    ? "text-muted-foreground hover:text-primary hover:bg-primary/10" 
-                    : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/20"
+                    ? isActive(item.href)
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    : isActive(item.href)
+                      ? "bg-white/30 text-primary-foreground"
+                      : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/20"
                 }`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <item.icon className="w-4 h-4" />
                 <span className="font-medium">{item.label}</span>
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -83,18 +93,22 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         <div className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${
-          isOpen ? "max-h-64 pb-4" : "max-h-0"
+          isOpen ? "max-h-80 pb-4" : "max-h-0"
         }`}>
           <div className={`pt-2 border-t ${isScrolled ? "border-border/50" : "border-white/20"}`}>
             {navItems.map((item, index) => (
-              <a
+              <Link
                 key={item.href}
-                href={item.href}
+                to={item.href}
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-3 py-3 px-4 rounded-xl my-1 transition-all duration-300 ${
                   isScrolled 
-                    ? "text-muted-foreground hover:text-primary hover:bg-primary/10" 
-                    : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/20"
+                    ? isActive(item.href)
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    : isActive(item.href)
+                      ? "bg-white/30 text-primary-foreground"
+                      : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/20"
                 }`}
                 style={{ 
                   animationDelay: `${index * 50}ms`,
@@ -105,7 +119,7 @@ const Navbar = () => {
               >
                 <item.icon className="w-5 h-5" />
                 <span className="font-medium">{item.label}</span>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
