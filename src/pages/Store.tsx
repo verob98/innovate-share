@@ -24,64 +24,17 @@ const Store = () => {
     );
   };
 
-  const products = [
-    {
-      id: "prod-1",
-      name: "Curso de React Avanzado",
-      description: "Aprende React desde cero hasta nivel experto con proyectos reales.",
-      price: "$49.99",
-      rating: 4.9,
-      image: "📚",
-      category: "Cursos",
-    },
-    {
-      id: "prod-2",
-      name: "Template Dashboard Pro",
-      description: "Plantilla premium para dashboards con múltiples componentes.",
-      price: "$29.99",
-      rating: 4.8,
-      image: "🎨",
-      category: "Templates",
-    },
-    {
-      id: "prod-3",
-      name: "E-book: Guía de JavaScript",
-      description: "Guía completa de JavaScript moderno con ejemplos prácticos.",
-      price: "$19.99",
-      rating: 4.7,
-      image: "📖",
-      category: "E-books",
-    },
-    {
-      id: "prod-4",
-      name: "Pack de Iconos Tech",
-      description: "Más de 500 iconos relacionados con tecnología en formato SVG.",
-      price: "$14.99",
-      rating: 4.9,
-      image: "✨",
-      category: "Recursos",
-    },
-    {
-      id: "prod-5",
-      name: "Mentoría 1:1",
-      description: "Sesión de mentoría personalizada de 1 hora sobre desarrollo web.",
-      price: "$79.99",
-      rating: 5.0,
-      image: "💬",
-      category: "Servicios",
-    },
-    {
-      id: "prod-6",
-      name: "Kit de UI Components",
-      description: "Componentes reutilizables para React con Tailwind CSS.",
-      price: "$39.99",
-      rating: 4.8,
-      image: "🧩",
-      category: "Templates",
-    },
-  ];
+  const products: Array<{
+    id: string;
+    name: string;
+    description: string;
+    price: string;
+    rating: number;
+    image: string;
+    category: string;
+  }> = [];
 
-  const categories = ["Todos", ...new Set(products.map(p => p.category))];
+  const categories = ["Todos", "Cursos", "Templates", "E-books", "Recursos", "Servicios"];
   const [activeCategory, setActiveCategory] = useState("Todos");
 
   const filteredProducts = activeCategory === "Todos" 
@@ -100,7 +53,7 @@ const Store = () => {
               <span className="text-sm font-medium">Tienda Digital</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Recursos & Productosss
+              Recursos & Productos
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Descubre cursos, templates, e-books y recursos exclusivos para potenciar 
@@ -128,64 +81,69 @@ const Store = () => {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProducts.map((product, index) => (
-              <div
-                key={product.id}
-                className={`group glass-card p-6 hover:scale-[1.02] transition-all duration-500 ${
-                  isVisible 
-                    ? "opacity-100 translate-y-0" 
-                    : "opacity-0 translate-y-12"
-                }`}
-                style={{ transitionDelay: `${300 + index * 100}ms` }}
-              >
-                {/* Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <span className="text-4xl">{product.image}</span>
-                  <button 
-                    onClick={() => toggleFavorite(product.id)}
-                    className="p-2 rounded-full hover:bg-secondary/50 transition-colors"
-                  >
-                    <Heart 
-                      className={`w-5 h-5 transition-all duration-300 ${
-                        favorites.includes(product.id) 
-                          ? "fill-red-500 text-red-500 scale-110" 
-                          : "text-muted-foreground hover:text-red-400"
-                      }`} 
-                    />
-                  </button>
+          {filteredProducts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProducts.map((product, index) => (
+                <div
+                  key={product.id}
+                  className={`group glass-card p-6 hover:scale-[1.02] transition-all duration-500 ${
+                    isVisible 
+                      ? "opacity-100 translate-y-0" 
+                      : "opacity-0 translate-y-12"
+                  }`}
+                  style={{ transitionDelay: `${300 + index * 100}ms` }}
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <span className="text-4xl">{product.image}</span>
+                    <button 
+                      onClick={() => toggleFavorite(product.id)}
+                      className="p-2 rounded-full hover:bg-secondary/50 transition-colors"
+                    >
+                      <Heart 
+                        className={`w-5 h-5 transition-all duration-300 ${
+                          favorites.includes(product.id) 
+                            ? "fill-red-500 text-red-500 scale-110" 
+                            : "text-muted-foreground hover:text-red-400"
+                        }`} 
+                      />
+                    </button>
+                  </div>
+                  <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">
+                    {product.category}
+                  </span>
+                  <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    {product.description}
+                  </p>
+                  <div className="flex items-center gap-1 mb-4">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-medium text-foreground">{product.rating}</span>
+                  </div>
+                  <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                    <span className="text-xl font-bold text-primary">{product.price}</span>
+                    <button className="flex items-center gap-2 btn-primary px-4 py-2 text-sm">
+                      Ver más
+                      <ExternalLink className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-
-                {/* Category Badge */}
-                <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">
-                  {product.category}
-                </span>
-
-                {/* Content */}
-                <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                  {product.name}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                  {product.description}
-                </p>
-
-                {/* Rating */}
-                <div className="flex items-center gap-1 mb-4">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm font-medium text-foreground">{product.rating}</span>
-                </div>
-
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                  <span className="text-xl font-bold text-primary">{product.price}</span>
-                  <button className="flex items-center gap-2 btn-primary px-4 py-2 text-sm">
-                    Ver más
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className={`text-center py-16 glass-card transition-all duration-700 delay-300 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}>
+              <ShoppingBag className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                Próximamente
+              </h3>
+              <p className="text-muted-foreground">
+                Estamos preparando productos increíbles para ti. ¡Vuelve pronto!
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </Layout>
