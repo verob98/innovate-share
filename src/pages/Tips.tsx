@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import TipCard from "@/components/TipCard";
-import { Lightbulb, Zap, Settings, Sparkles, Code, Shield } from "lucide-react";
+import { Lightbulb, Zap, Settings, Sparkles, Code, Shield, Bell } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const Tips = () => {
@@ -41,10 +41,15 @@ const Tips = () => {
       icon: <Code className="w-7 h-7 text-primary" />,
       title: "Documenta tu trabajo",
       description: "Escribe comentarios claros y mantén un README actualizado. Tu yo del futuro te lo agradecerá.",
+    }, {
+      id: "tip-6",
+      icon: <Code className="w-7 h-7 text-primary" />,
+      title: "Documenta tu trabajo",
+      description: "Escribe comentarios claros y mantén un README actualizado. Tu yo del futuro te lo agradecerá.",
     },
     {
-      id: "tip-6",
-      icon: <Shield className="w-7 h-7 text-accent" />,
+      id: "tip-7",
+      icon: <Bell className="w-7 h-7 text-accent" />,
       title: "Seguridad primero",
       description: "Valida siempre los datos de entrada. Usa HTTPS y mantén tus dependencias actualizadas.",
     },
